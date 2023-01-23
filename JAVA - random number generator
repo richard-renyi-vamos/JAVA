@@ -1,0 +1,15 @@
+import java.lang.Math;   
+public class RandomNumberExample1  
+{   
+public static void main(String args[])   
+{   
+    
+// RANDOM NUMBER GENERATION
+
+System.out.println("RANDOM NUMBER #1:" + Math.random()); 
+System.out.println("RANDOM NUMBER #2:" + Math.random());  
+System.out.println("RANDOM NUMBER #3:" + Math.random()); 
+System.out.println("RANDOM NUMBER #4:" + Math.random()); 
+System.out.println("RANDOM NUMBER #5:" + Math.random()); 
+}   
+}  
