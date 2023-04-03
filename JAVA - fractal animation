@@ -1,0 +1,66 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Line2D;
+
+public class FractalAnimation extends JPanel {
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+    private static final int MAX_DEPTH = 10;
+    private static final double ANGLE = Math.PI / 3.0;
+
+    private int currentDepth = 0;
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Fractal Animation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(WIDTH, HEIGHT);
+
+        FractalAnimation fractal = new FractalAnimation();
+        frame.add(fractal);
+        frame.setVisible(true);
+
+        fractal.animate();
+    }
+
+    private void animate() {
+        while (currentDepth <= MAX_DEPTH) {
+            repaint();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            currentDepth++;
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, WIDTH, HEIGHT);
+
+        drawFractal(g2d, WIDTH / 2.0, HEIGHT / 2.0, 200.0, ANGLE, currentDepth);
+    }
+
+    private void drawFractal(Graphics2D g2d, double x, double y, double size, double angle, int depth) {
+        if (depth == 0) {
+            return;
+        }
+
+        double x1 = x + size * Math.cos(angle);
+        double y1 = y - size * Math.sin(angle);
+        g2d.draw(new Line2D.Double(x, y, x1, y1));
+
+        double newSize = size / 2.0;
+        double newAngle1 = angle + ANGLE;
+        double newAngle2 = angle - ANGLE;
+
+        drawFractal(g2d, x1, y1, newSize, newAngle1, depth - 1);
+        drawFractal(g2d, x1, y1, newSize, newAngle2, depth - 1);
+    }
+}
+
+// # CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
