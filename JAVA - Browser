@@ -1,0 +1,58 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.io.*;
+import java.net.*;
+
+public class SimpleBrowser extends JFrame implements ActionListener, HyperlinkListener {
+    private JTextField urlField;
+    private JEditorPane contentPane;
+    
+    public SimpleBrowser() {
+        setTitle("Simple Browser");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        urlField = new JTextField(30);
+        urlField.addActionListener(this);
+        
+        contentPane = new JEditorPane();
+        contentPane.setEditable(false);
+        contentPane.addHyperlinkListener(this);
+        
+        JScrollPane scrollPane = new JScrollPane(contentPane);
+        
+        add(urlField, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+    }
+    
+    public void actionPerformed(ActionEvent event) {
+        try {
+            URL url = new URL(urlField.getText());
+            contentPane.setPage(url);
+        } catch (MalformedURLException e) {
+            JOptionPane.showMessageDialog(this, "Invalid URL: " + urlField.getText());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error loading URL: " + e.getMessage());
+        }
+    }
+    
+    public void hyperlinkUpdate(HyperlinkEvent event) {
+        if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+            try {
+                contentPane.setPage(event.getURL());
+                urlField.setText(event.getURL().toString());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error loading URL: " + e.getMessage());
+            }
+        }
+    }
+    
+    public static void main(String[] args) {
+        SimpleBrowser browser = new SimpleBrowser();
+        browser.setVisible(true);
+    }
+}
+
+# CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
