@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      canvas {
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+
+    <script>
+      // Get the canvas element
+      const canvas = document.getElementById('myCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // Set initial position and velocity of the ball
+      let x = canvas.width / 2;
+      let y = canvas.height / 2;
+      let dx = 2; // horizontal velocity
+      let dy = -2; // vertical velocity
+      const ballRadius = 20;
+
+      function drawBall() {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#0095DD';
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function draw() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the ball
+        drawBall();
+
+        // Update ball position
+        x += dx;
+        y += dy;
+
+        // Reverse direction if ball hits the walls
+        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+          dx = -dx;
+        }
+        if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+          dy = -dy;
+        }
+
+        // Request animation frame
+        requestAnimationFrame(draw);
+      }
+
+      // Start the animation
+      draw();
+    </script>
+  </body>
+</html>
+
+
+// CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
