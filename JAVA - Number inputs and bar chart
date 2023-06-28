@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .chart {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      height: 200px;
+    }
+
+    .bar {
+      background-color: #007bff;
+      margin-right: 5px;
+      width: 20px;
+      transition: height 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart" id="chart"></div>
+
+  <script>
+    // Function to prompt the user for number inputs
+    function promptNumbers() {
+      var numbers = [];
+      for (var i = 1; i <= 10; i++) {
+        var number = parseFloat(prompt('Enter number ' + i + ':'));
+        numbers.push(number);
+      }
+      return numbers;
+    }
+
+    // Function to create the bar chart
+    function createChart(numbers) {
+      var chart = document.getElementById('chart');
+
+      for (var i = 0; i < numbers.length; i++) {
+        var bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = numbers[i] * 10 + 'px';
+        chart.appendChild(bar);
+      }
+    }
+
+    // Prompt for numbers and create the chart
+    var numbers = promptNumbers();
+    createChart(numbers);
+  </script>
+</body>
+</html>
+
+// CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
