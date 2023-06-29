@@ -1,0 +1,63 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.io.File;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+public class HardDriveGraph extends JPanel {
+
+    private static final long serialVersionUID = 1L;
+    private static final int BAR_WIDTH = 40;
+    private static final int BAR_HEIGHT = 250;
+    private static final int BAR_GAP = 10;
+    private static final int PANEL_WIDTH = (BAR_WIDTH + BAR_GAP) * File.listRoots().length + BAR_GAP;
+    private static final int PANEL_HEIGHT = BAR_HEIGHT + 2 * BAR_GAP;
+
+    public HardDriveGraph() {
+        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        File[] roots = File.listRoots();
+        int x = BAR_GAP;
+
+        for (File root : roots) {
+            long totalSpace = root.getTotalSpace();
+            long freeSpace = root.getFreeSpace();
+            int barHeight = (int) (BAR_HEIGHT * ((double) freeSpace / totalSpace));
+
+            g2d.setColor(Color.BLUE);
+            g2d.fillRect(x, PANEL_HEIGHT - BAR_GAP - barHeight, BAR_WIDTH, barHeight);
+
+            g2d.setColor(Color.BLACK);
+            g2d.drawRect(x, PANEL_HEIGHT - BAR_GAP - barHeight, BAR_WIDTH, barHeight);
+
+            x += BAR_WIDTH + BAR_GAP;
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Hard Drive Graph");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.add(new HardDriveGraph());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        });
+    }
+}
+
+
+// CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
