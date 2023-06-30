@@ -1,0 +1,42 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class WikipediaSearch {
+
+    public static void main(String[] args) {
+        String searchTerm = "Java programming language"; // Enter your search term here
+        
+        try {
+            // Construct the URL for the API request
+            String urlStr = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=" + searchTerm.replace(" ", "%20");
+            URL url = new URL(urlStr);
+            
+            // Open a connection to the URL
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            
+            // Read the response from the API
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+            
+            // Parse and display the search results
+            String jsonResponse = response.toString();
+            System.out.println(jsonResponse);
+            
+            // TODO: Extract relevant information from the JSON response
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
