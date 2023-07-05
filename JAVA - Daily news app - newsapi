@@ -1,0 +1,57 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class DailyNews {
+    public static void main(String[] args) {
+        try {
+            // Set your API key obtained from News API
+            String apiKey = "YOUR_API_KEY";
+            
+            // Set the News API endpoint for top headlines
+            String endpoint = "https://newsapi.org/v2/top-headlines?country=us&apiKey=" + apiKey;
+            
+            // Create a URL object with the endpoint
+            URL url = new URL(endpoint);
+            
+            // Create an HTTP connection
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            
+            // Set the request method to GET
+            connection.setRequestMethod("GET");
+            
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+            
+            // If the response code is successful (200)
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Create a BufferedReader to read the response
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                
+                // Read the response line by line
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+                
+                // Parse the JSON response
+                // You'll need to use a JSON library for this step, such as Gson or Jackson
+                // Here, we'll just print the raw response
+                System.out.println(response.toString());
+            } else {
+                System.out.println("Error: " + responseCode);
+            }
+            
+            // Close the connection
+            connection.disconnect();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
