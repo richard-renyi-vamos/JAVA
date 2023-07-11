@@ -1,0 +1,36 @@
+const XLSX = require('xlsx');
+
+function mergeExcelTables(file1, file2, outputFileName) {
+  // Load the first Excel file
+  const workbook1 = XLSX.readFile(file1);
+  const worksheet1 = workbook1.Sheets[workbook1.SheetNames[0]];
+
+  // Load the second Excel file
+  const workbook2 = XLSX.readFile(file2);
+  const worksheet2 = workbook2.Sheets[workbook2.SheetNames[0]];
+
+  // Combine the worksheets
+  const mergedWorksheet = XLSX.utils.sheet_add_json(
+    worksheet1,
+    XLSX.utils.sheet_to_json(worksheet2, { header: 1 }),
+    { skipHeader: true, origin: -1 }
+  );
+
+  // Create a new workbook and add the merged worksheet
+  const mergedWorkbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(mergedWorkbook, mergedWorksheet, 'Merged');
+
+  // Save the merged workbook to a file
+  XLSX.writeFile(mergedWorkbook, outputFileName);
+
+  console.log('Merge complete!');
+}
+
+// Usage example
+const file1 = 'path/to/file1.xlsx';
+const file2 = 'path/to/file2.xlsx';
+const outputFileName = 'path/to/merged.xlsx';
+
+mergeExcelTables(file1, file2, outputFileName);
+
+// CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
