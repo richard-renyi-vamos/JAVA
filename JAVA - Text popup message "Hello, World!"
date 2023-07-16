@@ -1,0 +1,10 @@
+import javax.swing.JOptionPane;
+
+public class PopupMessageExample {
+    public static void main(String[] args) {
+        String message = "Hello, World!"; // Custom text for the popup message
+        
+        // Display the popup message dialog
+        JOptionPane.showMessageDialog(null, message);
+    }
+}
