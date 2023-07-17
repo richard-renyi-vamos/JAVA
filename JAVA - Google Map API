@@ -1,0 +1,60 @@
+import javax.swing.*;
+import java.awt.*;
+import com.google.maps.*;
+import com.google.maps.model.LatLng;
+import com.google.maps.model.Marker;
+import com.google.maps.model.MarkerOptions;
+
+public class MapExample extends JFrame {
+    private static final String API_KEY = "YOUR_API_KEY"; // Replace with your own Google Maps API key
+    private static final String PLACE_NAME = "Your Place"; // Replace with the place you want to display
+
+    private GoogleMap map;
+    private Marker marker;
+
+    public MapExample() {
+        setTitle("Map Example");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(800, 600));
+
+        try {
+            // Initialize the Google Maps API client
+            GeoApiContext context = new GeoApiContext.Builder()
+                    .apiKey(API_KEY)
+                    .build();
+
+            // Retrieve the latitude and longitude of the place
+            GeocodingResult[] results = GeocodingApi.geocode(context, PLACE_NAME).await();
+            LatLng location = results[0].geometry.location;
+
+            // Initialize the map
+            map = new GoogleMap(new MapOptions()
+                    .center(new LatLng(location.lat, location.lng))
+                    .zoom(15));
+
+            // Add a marker to the map at the specified location
+            marker = new Marker(new MarkerOptions()
+                    .position(new LatLng(location.lat, location.lng))
+                    .map(map)
+                    .title(PLACE_NAME));
+
+            // Set up the map panel
+            JPanel mapPanel = new JPanel();
+            mapPanel.setLayout(new BorderLayout());
+            mapPanel.add(map, BorderLayout.CENTER);
+
+            getContentPane().add(mapPanel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        pack();
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(MapExample::new);
+    }
+}
+
+// CREATED WITH THE HELP OF OPEN-AI CHAT GPT: https://chat.openai.com/chat
